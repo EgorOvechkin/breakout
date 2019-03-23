@@ -2,6 +2,7 @@
   const canvas = document.getElementById('breakout');
   const ctx = canvas.getContext('2d');
   const fillColor = '#0095DD';
+  let interval;
   let rightPressed = false;
   let leftPressed = false;
 
@@ -42,8 +43,17 @@
       dx = -dx;
     }
 
-    if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+    if (y + dy < ballRadius) {
       dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+      if (x > paddleX && x < paddleX + paddleWidth) {
+        dy = -dy;
+      } else {
+        alert('Game over');
+        document.location.reload();
+        clearInterval(interval);
+        return;
+      }
     }
 
     if (rightPressed && paddleX <= canvas.width - paddleWidth) {
@@ -71,7 +81,7 @@
     }
   }
 
-  setInterval(draw, 10);
+  interval = setInterval(draw, 10);
   document.addEventListener('keydown', keyHandler);
   document.addEventListener('keyup', keyHandler);
 })();
