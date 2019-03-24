@@ -33,9 +33,37 @@
     ctx.closePath();
   }
 
+  const brickRowCount = 3;
+  const brickColumnCount = 5;
+  const brickWidth = 75;
+  const brickHeigth = 20;
+  const brickPadding = 10;
+  const brickOffsetTop = 30;
+  const brickOffsetLeft = 30;
+  const brickColumn = Array.from({length: brickRowCount});
+  const bricks = Array.from({length: brickColumnCount}, () => brickColumn.map(nothing => ({x: 0, y: 0})));
+
+  function drawBricks(bricks) {
+    bricks.forEach((brickColumn, columnIndex) => {
+      brickColumn.forEach((brick, rowIndex) => {
+        let brickX = brickOffsetLeft + (columnIndex * (brickWidth + brickPadding));
+        let brickY = brickOffsetTop + (rowIndex * (brickHeigth + brickPadding));
+
+        brick.x = brickX;
+        brick.y = brickY;
+        ctx.beginPath();
+        ctx.rect(brickX, brickY, brickWidth, brickHeigth);
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        ctx.closePath();
+      });
+    });
+  }
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    drawBricks(bricks);
     drawBall();
     drawPaddle();
 
